@@ -4,7 +4,7 @@
     "type": "wordpress-plugin",
     "require": {
         "thisdata/api": "^0.1.3",
-        "mohiohio/wordpress-lib": "dev-master"
+        "mohiohio/wordpress-lib": "^0.1"
     },
     "require-dev": {
         "analog/analog": "^1.0"
