@@ -1,7 +1,8 @@
 <?php
 /**
- * Plugin Name: ThisData
+ * Plugin Name: ThisData for WordPress
  * Version: 0.1
+ * Description: ThisData provides login intelligence. We notify you when one of your users or customers has their account accessed from somewhere unusual or by a device they don't normally use. It gives your customers the confidence that you're taking security seriously and doing everything you can to protect their account.
  * Text Domain: thisdata-plugin
  */
 namespace ThisData\WordPress;
@@ -28,7 +29,7 @@ if( is_admin() ) {
 
 add_action('init', function() {
 
-    if($apiKey = API::getKey()){
+    if($apiKey = API::getKey()) {
 
         try {
 
@@ -36,11 +37,9 @@ add_action('init', function() {
             Webhook::init();
 
         } catch (\Exception $e) {
-            //TODO Display error
+
             add_action('admin_notices', function() use ($e) {
-
                 $message = $e->getMessage();
-
                 echo '<div class="notice notice-error"><p>'.$message.'</p></div>';
             });
         }

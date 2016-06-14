@@ -27,7 +27,7 @@ class Email {
         $title = apply_filters( 'thisdata/reset_password_title', $title, $user_login);
         $message = apply_filters( 'thisdata/reset_password_message', $message, $reset_key, $user_login);
 
-        \Analog::log('Sending message '.$message, \Analog::DEBUG);
+        //\Analog::log('Sending message '.$message, \Analog::DEBUG);
 
         return wp_mail( $user_email, wp_specialchars_decode( $title ), $message );
     }

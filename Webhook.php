@@ -13,7 +13,7 @@ class Webhook {
 
             self::WEBHOOK_URL => function() {
 
-                \Analog::log('With $_POST '.var_export($_POST,true),\Analog::DEBUG);
+                //\Analog::log('With $_POST '.var_export($_POST,true),\Analog::DEBUG);
 
                 if(!isset($_POST['user_id'])){
                     return false;
@@ -33,7 +33,7 @@ class Webhook {
                 ]);
 
                 //Destory sessoins,
-                \Analog::log('Destroying Sessions',\Analog::DEBUG);
+                //\Analog::log('Destroying Sessions',\Analog::DEBUG);
 
                 $sessions = \WP_Session_Tokens::get_instance( $user_id );
                 $sessions->destroy_all();

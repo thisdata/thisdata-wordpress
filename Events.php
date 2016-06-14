@@ -143,7 +143,7 @@ class Events {
 
         $userData = static::getUser($user);
 
-        \Analog::log('Tracking Event '.$verb.' with '.var_export($userData,true),\Analog::DEBUG);
+        //\Analog::log('Tracking Event '.$verb.' with '.var_export($userData,true),\Analog::DEBUG);
 
         return $eventEndpoint->trackEvent($verb,
             static::getIP(),
