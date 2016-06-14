@@ -1,3 +1,4 @@
-# thisdata-plugin
+# ThisData WordPress plugin
+
 ThisData integration for WordPress
 
