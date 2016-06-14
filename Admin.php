@@ -27,11 +27,18 @@ class Admin extends \Mohiohio\WordPress\Admin
 
     function init() {
 
-        $this->add_field([
+        $field = [
             'name'=> self::SETTINGS_API_KEY,
             'title'=>'Your API Key',
-            'type' => 'password'
-        ]);
+            'type' => 'password',
+            'props' => []
+        ];
+
+        if(getenv(ENV_API_KEY)){
+            $field['props'][] = ['disabled'=>true];
+        }
+
+        $this->add_field($field);
     }
 
     static function get_settings_namespace() {
