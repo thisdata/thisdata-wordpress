@@ -44,7 +44,7 @@ add_action('init', function() {
             });
         }
 
-    } elseif($_GET['page'] !== Admin::SETTINGS) {
+    } elseif(isset($_GET['page']) && $_GET['page'] !== Admin::SETTINGS) {
 
         add_action('admin_notices', function() {
             $message = sprintf(
