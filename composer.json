@@ -1,5 +1,5 @@
 {
-    "name": "thisdata/wordpress",
+    "name": "thisdata/thisdata-wordpress",
     "description": "ThisData integration for WordPress",
     "type": "wordpress-plugin",
     "require": {
