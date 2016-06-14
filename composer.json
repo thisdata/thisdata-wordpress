@@ -16,5 +16,9 @@
             "email": "field.tim@gmail.com"
         }
     ],
-    "minimum-stability": "dev"
+    "autoload": {
+        "psr-4": {
+            "ThisData\\WordPress\\": "./"
+        }
+    },
 }

@@ -7,18 +7,6 @@
  */
 namespace ThisData\WordPress;
 
-spl_autoload_register( function($classname) {
-
-     if(preg_match('#^ThisData\\\WordPress\\\#',$classname)){
-
-         $path = preg_replace(['#^ThisData\\\WordPress#','#\\\#'],[__DIR__,'/'],$classname).'.php';
-
-         if(file_exists($path)) {
-             require $path;
-         }
-     }
-});
-
 const ENV_API_KEY = 'THISDATA_API_KEY';
 
 if( is_admin() ) {
