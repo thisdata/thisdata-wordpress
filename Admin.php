@@ -31,11 +31,13 @@ class Admin extends \Mohiohio\WordPress\Admin
             'name'=> self::SETTINGS_API_KEY,
             'title'=>'Your API Key',
             'type' => 'password',
-            'props' => []
+            'props' => ['class'=>'regular-text']
         ];
 
         if(getenv(ENV_API_KEY)){
-            $field['props'][] = ['disabled'=>true];
+            $field['props']['disabled'] = true;
+            $field['props']['class'] .= ' disabled';
+            $field['props']['placeholder'] = 'Set with environment variable';
         }
 
         $this->add_field($field);
