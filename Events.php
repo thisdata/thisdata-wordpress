@@ -27,7 +27,7 @@ class Events {
     static function init(\ThisData\Api\Endpoint\EventsEndpoint $endpoint) {
 
         //User fields at time of init
-        $user = wp_get_current_user();
+        $user = get_current_user_id() ? wp_get_current_user() : null;
 
         //Loop over each event we are interested in and call 'track' or track{camelCase(verb)}
         foreach(static::$events as $verb => $wpHook) {
@@ -54,10 +54,8 @@ class Events {
     }
 
     static function trackLogIn($args) {
-        static::track([
-             // user object is passed as second argment to the wp_login hook
-            'user' => $args['hookArgs'][1]
-        ] + $args);
+        // https://developer.wordpress.org/reference/hooks/wp_login/
+        return  static::userNameHook($args);
     }
 
     static function trackLogOut($args) {
@@ -107,7 +105,7 @@ class Events {
 
         if($compare($user, $old_user_data)) {
             static::track([
-                'user' => $user
+                'user' => $user ?: null
             ] + $args);
         }
     }
@@ -115,12 +113,8 @@ class Events {
     //Track hooks where first argument is the username attempting the action
     static function userNameHook($args) {
 
-        $username = $args['hookArgs'][0];
-
-        $user = get_user_by('login',$username);
-
         return static::track([
-            'user' => $user
+            'username' => $args['hookArgs'][0]
         ] + $args);
     }
 
@@ -131,6 +125,7 @@ class Events {
             'eventEndpoint' => '__required',
             'hookArgs' => [],
             'user' => null,
+            'username' => null,
         ];
 
         foreach($args as $k => $v) {
@@ -141,7 +136,11 @@ class Events {
 
         extract($args);
 
-        $userData = static::getUser($user);
+        if(!$user && $username){
+            $user = get_user_by('login',$username);
+        }
+
+        $userData = $user ? static::getUser($user) : static::getAnonymousUser($username);
 
         //\Analog::log('Tracking Event '.$verb.' with '.var_export($userData,true),\Analog::DEBUG);
 
@@ -160,12 +159,18 @@ class Events {
         return $_SERVER['HTTP_USER_AGENT'];
     }
 
-    static function getUser($user=null) {
+    static function getAnonymousUser($username=null) {
+        return [
+            'id' => $username ?: 'anonymous'
+        ];
+    }
+
+    static function getUser(\WP_User $user) {
 
         $user = $user ?: wp_get_current_user();
 
         return [
-            'id' => $user->ID ?: 'anonymous',
+            'id' => $user->user_login,
             'name' => static::getUserName($user),
             'email' => $user->user_email,
         ];
