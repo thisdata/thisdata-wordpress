@@ -160,12 +160,12 @@ class Events {
         return $_SERVER['HTTP_USER_AGENT'];
     }
 
-    static function getUser(\WP_User $user=null) {
+    static function getUser($user=null) {
 
         $user = $user ?: wp_get_current_user();
 
         return [
-            'id' => $user->ID,
+            'id' => $user->ID ?: 'anonymous',
             'name' => static::getUserName($user),
             'email' => $user->user_email,
         ];
