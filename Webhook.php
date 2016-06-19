@@ -13,24 +13,29 @@ class Webhook {
 
             self::WEBHOOK_URL => function() {
 
-                \Analog::log('With $_POST '.var_export($_POST,true), \Analog::DEBUG);
-                \Analog::log('With Reqest body '.file_get_contents('php://input'), \Analog::DEBUG);
-                \Analog::log('With Hash '.static::getHash(), \Analog::DEBUG);
-                \Analog::log('With Header Hash '.$_SERVER['HTTP_X-Signature'], \Analog::DEBUG);
+                //\Analog::log('With $_POST '.var_export($_POST,true), \Analog::DEBUG);
+                //\Analog::log('With Reqest body '.file_get_contents('php://input'), \Analog::DEBUG);
+                //\Analog::log('With Hash '.static::getHash(), \Analog::DEBUG);
+                //\Analog::log('With Header Hash '.var_export($_SERVER,true), \Analog::DEBUG);
 
                 if(!static::authenticate()){
                     header('HTTP/1.0 401 Unauthorized');
                     exit();
                 }
 
-                if(!isset($_POST['user_id'])){
+                $data = json_decode(static::getRequestBody(),true);
+
+                $user_id = $data['user']['id'];
+                $was_user = $data['was_user'];
+
+                if(!$user = get_userdata($user_id)){
+                    //No such user
                     return false;
                 }
 
-                $user_id = $_POST['user_id'];
-
-                if(!$user = get_userdata($user_id)){
-                    return false;
+                if($was_user) {
+                    //All Good
+                    return;
                 }
 
                 //Track this event ( custom event )
@@ -57,14 +62,15 @@ class Webhook {
         ]);
     }
 
-    static function authenticate() {
-        return isset($_SERVER['HTTP_X-Signature']) && $_SERVER['HTTP_X-Signature'] === static::getHash();
+    static function getRequestBody() {
+        return file_get_contents('php://input');
     }
 
     static function getHash() {
+        return hash_hmac('sha512', static::getRequestBody(), API::getKey());
+    }
 
-        $requestBody = file_get_contents('php://input');
-
-        return hash_hmac('sha256', $requestBody, API::getKey());
+    static function authenticate() {
+        return isset($_SERVER['HTTP_X_SIGNATURE']) && $_SERVER['HTTP_X_SIGNATURE'] === static::getHash();
     }
 }
