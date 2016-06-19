@@ -41,6 +41,15 @@ class Admin extends \Mohiohio\WordPress\Admin
         }
 
         $this->add_field($field);
+
+        $this->add_field([
+            'name'=>'webhook',
+            'title' => 'Alert Webhooks Path',
+            'display_callback' => function() {
+                echo "<p>This optional feature enables ThisData to automatically log out and reset user passwords when we generate an alert. <a target=\"_blank\" href=\"http://help.thisdata.com/docs/webhooks\">Learn more about when and what we'll send.</a><p>";
+                echo "<pre>".home_url(Webhook::WEBHOOK_URL)."</pre>";
+            }
+        ]);
     }
 
     static function get_settings_namespace() {

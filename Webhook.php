@@ -5,7 +5,7 @@ use Mohiohio\WordPress\Router;
 
 class Webhook {
 
-    const WEBHOOK_URL = 'thisdata/wp-user-reset';
+    const WEBHOOK_URL = 'thisdata/webhook';
 
     static function init() {
 
@@ -13,7 +13,15 @@ class Webhook {
 
             self::WEBHOOK_URL => function() {
 
-                //\Analog::log('With $_POST '.var_export($_POST,true),\Analog::DEBUG);
+                \Analog::log('With $_POST '.var_export($_POST,true), \Analog::DEBUG);
+                \Analog::log('With Reqest body '.file_get_contents('php://input'), \Analog::DEBUG);
+                \Analog::log('With Hash '.static::getHash(), \Analog::DEBUG);
+                \Analog::log('With Header Hash '.$_SERVER['HTTP_X-Signature'], \Analog::DEBUG);
+
+                if(!static::authenticate()){
+                    header('HTTP/1.0 401 Unauthorized');
+                    exit();
+                }
 
                 if(!isset($_POST['user_id'])){
                     return false;
@@ -47,5 +55,16 @@ class Webhook {
                 Email::passwordReset($user->user_email, $user->user_login, $key);
             }
         ]);
+    }
+
+    static function authenticate() {
+        return isset($_SERVER['HTTP_X-Signature']) && $_SERVER['HTTP_X-Signature'] === static::getHash();
+    }
+
+    static function getHash() {
+
+        $requestBody = file_get_contents('php://input');
+
+        return hash_hmac('sha256', $requestBody, API::getKey());
     }
 }
