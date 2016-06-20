@@ -18,7 +18,7 @@ class Webhook {
                 //\Analog::log('With Hash '.static::getHash(), \Analog::DEBUG);
                 //\Analog::log('With Header Hash '.$_SERVER['HTTP_X_SIGNATURE'], \Analog::DEBUG);
 
-                if(!static::authenticate()){
+                if(!static::authenticate()) {
                     header('HTTP/1.0 401 Unauthorized');
                     exit();
                 }
@@ -28,7 +28,7 @@ class Webhook {
                 $user_id = $data['user']['id'];
                 $was_user = $data['was_user'];
 
-                if(!$user = get_userdata($user_id)){
+                if(!$user = get_userdata($user_id)) {
                     return false; //No such user
                 }
 
