@@ -19,15 +19,20 @@ class Events {
         'log-in-denied' => 'wp_login_failed',
         'password-reset-request' => 'retrieve_password_key',
         'password-reset' => 'after_password_reset',
+
         //'password-reset-fail' => // Can't find a hook that will give me access to the user in this case
         'email-update' => 'profile_update',
-        'password-update' => 'profile_update'
+        'password-update' => 'profile_update',
+
+        'plugin-activated' => 'activate_plugin',
+        'plugin-deactivated' => 'deactivate_plugin',
+        'automatic-update' => 'upgrader_process_complete'
     ];
 
     static function init(\ThisData\Api\Endpoint\EventsEndpoint $endpoint) {
 
         //User fields at time of init
-        $user = get_current_user_id() ? wp_get_current_user() : null;
+        $user = static::getCurrentUser();
 
         //Loop over each event we are interested in and call 'track' or track{camelCase(verb)}
         foreach(static::$events as $verb => $wpHook) {
@@ -51,6 +56,10 @@ class Events {
                 ]);
             },10,10);
         }
+    }
+
+    static function getCurrentUser() {
+        return get_current_user_id() ? wp_get_current_user() : null;
     }
 
     static function trackLogIn($args) {
@@ -110,11 +119,29 @@ class Events {
         }
     }
 
+    static function trackPluginActivated($args) {
+        return static::currentUserHook($args);
+    }
+
+    static function trackPluginDeactivated($args) {
+        return static::currentUserHook($args);
+    }
+
+    static function trackAutomaticUpdate($args) {
+        return static::currentUserHook($args);
+    }
+
     //Track hooks where first argument is the username attempting the action
     static function userNameHook($args) {
-
         return static::track([
             'username' => $args['hookArgs'][0]
+        ] + $args);
+    }
+
+    //Track hooks based on current user
+    static function currentUserHook($args) {
+        return static::track([
+            'user' => static::getCurrentUser()
         ] + $args);
     }
 
@@ -129,21 +156,20 @@ class Events {
         ];
 
         foreach($args as $k => $v) {
-            if($v === '__required'){
+            if($v === '__required') {
                 throw new \Exception('Missing argument '.$k);
             }
         }
 
         extract($args);
 
-        if(!$user && $username){
+        if (!$user && $username) {
             $user = get_user_by('login',$username);
         }
 
         $userData = $user ? static::getUser($user) : static::getAnonymousUser($username);
 
         //\Analog::log('Tracking Event '.$verb.' with '.var_export($userData,true),\Analog::DEBUG);
-
         return $eventEndpoint->trackEvent($verb,
             static::getIP(),
             $userData,

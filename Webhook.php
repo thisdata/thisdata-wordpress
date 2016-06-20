@@ -16,7 +16,7 @@ class Webhook {
                 //\Analog::log('With $_POST '.var_export($_POST,true), \Analog::DEBUG);
                 //\Analog::log('With Reqest body '.file_get_contents('php://input'), \Analog::DEBUG);
                 //\Analog::log('With Hash '.static::getHash(), \Analog::DEBUG);
-                //\Analog::log('With Header Hash '.var_export($_SERVER,true), \Analog::DEBUG);
+                //\Analog::log('With Header Hash '.$_SERVER['HTTP_X_SIGNATURE'], \Analog::DEBUG);
 
                 if(!static::authenticate()){
                     header('HTTP/1.0 401 Unauthorized');
@@ -29,13 +29,11 @@ class Webhook {
                 $was_user = $data['was_user'];
 
                 if(!$user = get_userdata($user_id)){
-                    //No such user
-                    return false;
+                    return false; //No such user
                 }
 
                 if($was_user) {
-                    //All Good
-                    return;
+                    return; //All Good, user confirmed that this was them
                 }
 
                 //Track this event ( custom event )
@@ -46,8 +44,6 @@ class Webhook {
                 ]);
 
                 //Destory sessoins,
-                //\Analog::log('Destroying Sessions',\Analog::DEBUG);
-
                 $sessions = \WP_Session_Tokens::get_instance( $user_id );
                 $sessions->destroy_all();
 
