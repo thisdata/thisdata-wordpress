@@ -31,7 +31,7 @@ class Webhook {
                 $was_user = $data['was_user'];
 
                 \Analog::log('User ID: '.$username, \Analog::DEBUG);
-                \Analog::log('Was User: '.$was_user, \Analog::DEBUG);
+                \Analog::log('Was User: '.var_export($was_user,true), \Analog::DEBUG);
 
                 if(!$user = get_user_by('login',$username)) {
                     \Analog::log('No user found', \Analog::DEBUG);
@@ -40,32 +40,45 @@ class Webhook {
 
                 $user_id = $user->ID;
 
-                if($was_user) {
-                    \Analog::log('Returning as user confirmed it was them.', \Analog::DEBUG);
-                    return; //All Good, user confirmed that this was them
+                if($was_user === true) {
+
+                    Events::track([
+                        'verb' => 'webhook-was-user',
+                        'eventEndpoint' => API::getEventsEndpoint(),
+                        'user' => $user
+                    ]);
                 }
+                else if($was_user === false) {
 
-                //Track this event ( custom event )
-                Events::track([
-                    'verb' => 'webhook-reset',
-                    'eventEndpoint' => API::getEventsEndpoint(),
-                    'user' => $user
-                ]);
+                    Events::track([
+                        'verb' => 'webhook-resetting-password',
+                        'eventEndpoint' => API::getEventsEndpoint(),
+                        'user' => $user
+                    ]);
 
-                //Destory sessoins,
-                \Analog::log('Destroying session', \Analog::DEBUG);
-                $sessions = \WP_Session_Tokens::get_instance($user_id);
-                $sessions->destroy_all();
+                    //Destory sessoins,
+                    \Analog::log('Destroying session', \Analog::DEBUG);
+                    $sessions = \WP_Session_Tokens::get_instance($user_id);
+                    $sessions->destroy_all();
 
-                //Create new password
-                \Analog::log('Creating new password', \Analog::DEBUG);
-                wp_set_password(wp_generate_password(), $user_id);
+                    //Create new password
+                    \Analog::log('Creating new password', \Analog::DEBUG);
+                    wp_set_password(wp_generate_password(), $user_id);
 
-                $key = get_password_reset_key($user);
+                    $key = get_password_reset_key($user);
 
-                //Email user with Reset password link
-                \Analog::log('Emailing user with reset password link', \Analog::DEBUG);
-                Email::passwordReset($user->user_email, $user->user_login, $key);
+                    //Email user with Reset password link
+                    \Analog::log('Emailing user with reset password link', \Analog::DEBUG);
+                    Email::passwordReset($user->user_email, $user->user_login, $key);
+
+                } else {
+
+                    Events::track([
+                        'verb' => 'webhook-login-anomaly',
+                        'eventEndpoint' => API::getEventsEndpoint(),
+                        'user' => $user
+                    ]);
+                }
             }
         ]);
     }
