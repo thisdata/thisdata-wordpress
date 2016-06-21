@@ -33,7 +33,7 @@ class Webhook {
                 \Analog::log('User ID'.$user_id, \Analog::DEBUG);
                 \Analog::log('Was User'.$was_user, \Analog::DEBUG);
 
-                if(!$user = get_userdata($user_id)){
+                if(!$user = get_userdata($user_id)) {
                     \Analog::log('No user found', \Analog::DEBUG);
                     return false; //No such user
                 }
