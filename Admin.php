@@ -46,7 +46,7 @@ class Admin extends \Mohiohio\WordPress\Admin
             'name'=>'webhook',
             'title' => 'Alert Webhooks Path',
             'display_callback' => function() {
-                echo "<p>This optional feature enables ThisData to automatically log out and reset user passwords when we generate an alert. <a target=\"_blank\" href=\"http://help.thisdata.com/docs/webhooks\">Learn more about when and what we'll send.</a><p>";
+                echo "<p>When a suspicious login is detected ThisData will email the user to confirm if it was them. If they indicate that it was not them you can use this webhook alert path to automatically log out the user and reset the password. <a target=\"_blank\" href=\"http://help.thisdata.com/docs/webhooks\">Learn more about when and what we'll send.</a><p>";
                 echo "<pre>".home_url(Webhook::WEBHOOK_URL)."</pre>";
             }
         ]);
