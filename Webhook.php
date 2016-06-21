@@ -15,10 +15,10 @@ class Webhook {
 
                 \Analog::log('Reqest body '.file_get_contents('php://input'), \Analog::DEBUG);
                 \Analog::log('Request Hash '.static::getHash(), \Analog::DEBUG);
-                \Analog::log('Header Hash '.isset($_SERVER['HTTP_X_SIGNATURE']) ? $_SERVER['HTTP_X_SIGNATURE'] : " ( not found ) " , \Analog::DEBUG);
+                \Analog::log('Header Hash '. ( isset($_SERVER['HTTP_X_SIGNATURE']) ? $_SERVER['HTTP_X_SIGNATURE'] : " ( not found ) "  ) , \Analog::DEBUG);
 
                 if(!static::authenticate()) {
-                    \Analog::log('Webhook failed to autenticate', \Analog::DEBUG);
+                    \Analog::log('Webhook failed to authenticate', \Analog::DEBUG);
                     header('HTTP/1.0 401 Unauthorized');
                     exit();
                 }
