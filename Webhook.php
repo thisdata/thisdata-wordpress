@@ -13,9 +13,9 @@ class Webhook {
 
             self::WEBHOOK_URL => function() {
 
-                \Analog::log('Reqest body '.file_get_contents('php://input'), \Analog::DEBUG);
-                \Analog::log('Request Hash '.static::getHash(), \Analog::DEBUG);
-                \Analog::log('Header Hash '. ( isset($_SERVER['HTTP_X_SIGNATURE']) ? $_SERVER['HTTP_X_SIGNATURE'] : " ( not found ) "  ) , \Analog::DEBUG);
+                \Analog::log('Reqest body: '.file_get_contents('php://input'), \Analog::DEBUG);
+                \Analog::log('Request Hash: '.static::getHash(), \Analog::DEBUG);
+                \Analog::log('Header Hash: '. ( isset($_SERVER['HTTP_X_SIGNATURE']) ? $_SERVER['HTTP_X_SIGNATURE'] : " ( not found ) "  ) , \Analog::DEBUG);
 
                 if(!static::authenticate()) {
                     \Analog::log('Webhook failed to authenticate', \Analog::DEBUG);
@@ -23,23 +23,25 @@ class Webhook {
                     exit();
                 }
 
-                \Analog::log('Webhook Autenticated', \Analog::DEBUG);
+                \Analog::log('Webhook authenticated.', \Analog::DEBUG);
 
                 $data = json_decode(static::getRequestBody(),true);
 
-                $user_id = $data['user']['id'];
+                $username = $data['user']['id'];
                 $was_user = $data['was_user'];
 
-                \Analog::log('User ID'.$user_id, \Analog::DEBUG);
-                \Analog::log('Was User'.$was_user, \Analog::DEBUG);
+                \Analog::log('User ID: '.$username, \Analog::DEBUG);
+                \Analog::log('Was User: '.$was_user, \Analog::DEBUG);
 
-                if(!$user = get_userdata($user_id)) {
+                if(!$user = get_user_by('login',$username)) {
                     \Analog::log('No user found', \Analog::DEBUG);
                     return false; //No such user
                 }
 
+                $user_id = $user->ID;
+
                 if($was_user) {
-                    \Analog::log('Returning as user confirmed it was them', \Analog::DEBUG);
+                    \Analog::log('Returning as user confirmed it was them.', \Analog::DEBUG);
                     return; //All Good, user confirmed that this was them
                 }
 
@@ -51,8 +53,8 @@ class Webhook {
                 ]);
 
                 //Destory sessoins,
-                \Analog::log('Destroying Session', \Analog::DEBUG);
-                $sessions = \WP_Session_Tokens::get_instance( $user_id );
+                \Analog::log('Destroying session', \Analog::DEBUG);
+                $sessions = \WP_Session_Tokens::get_instance($user_id);
                 $sessions->destroy_all();
 
                 //Create new password
