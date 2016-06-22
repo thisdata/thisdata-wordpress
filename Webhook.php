@@ -69,7 +69,7 @@ class Webhook {
 
                     //Email user with Reset password link
                     \Analog::log('Emailing user with reset password link', \Analog::DEBUG);
-                    Email::passwordReset($user->user_email, $user->user_login, $key);
+                    Email::passwordReset($user, $key);
 
                 } else {
 

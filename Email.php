@@ -4,23 +4,29 @@ namespace ThisData\WordPress;
 
 class Email {
 
-    static function passwordReset($user_email, $user_login, $reset_key) {
-
-        $message = __('Your password has been reset for the following account:','thisdata-plugin') . "\r\n\r\n";
-        $message .= network_home_url( '/' ) . "\r\n\r\n";
-        $message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
-        $message .= __('This is an automatic security measure in response to suspicious activity.','thisdata-plugin') . "\r\n\r\n";
-        $message .= __('To reset your password, visit the following address:','thisdata-plugin') . "\r\n\r\n";
-        $message .= '<' . network_site_url("wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode($user_login), 'login') . ">\r\n";
+    static function passwordReset(\WP_User $user, $reset_key) {
 
         if ( is_multisite() )
         $blogname = $GLOBALS['current_site']->site_name;
         else
-        /*
-        * The blogname option is escaped with esc_html on the way into the database
-        * in sanitize_option we want to reverse this for the plain text arena of emails.
-        */
         $blogname = wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
+
+        $user_email = $user->user_email;
+        $user_login = $user->user_login;
+
+        $message = __('Hi '.$user->display_name.',','thisdata-plugin') . "\r\n\r\n";
+
+        $message .= sprintf( __('We\'ve automatically reset your password on %s','thisdata-plugin'), network_home_url('/') ) . "\r\n\r\n";
+
+        $message .= sprintf( __('Username: %s'), $user_login) . "\r\n\r\n";
+
+        $message .= __('We did this to secure your account, in response to suspicious activity.','thisdata-plugin') . "\r\n\r\n";
+
+        $message .= __('Please visit the following address now to complete the password reset process: ','thisdata-plugin') . "\r\n\r\n";
+
+        $message .= '<' . network_site_url("wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode($user_login), 'login') . ">\r\n\r\n\r\n\r\n";
+
+        $message .= __('Also remember to triple-check any future emails for suspicious looking content. We will never ask you for your password, and you should make sure the address (URL) of any website you do enter your password hasn\'t changed.','thisdata-plugin') . "\r\n\r\n";
 
         $title = sprintf( __('[%s] Password Reset','thisdata-plugin'), $blogname );
 
