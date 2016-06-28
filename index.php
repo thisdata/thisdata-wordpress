@@ -7,6 +7,12 @@
  */
 namespace ThisData\WordPress;
 
+$composer_autoload = __DIR__.'/vendor/autoload.php';
+
+if(file_exists($composer_autoload)) {
+    require_once $composer_autoload;
+}
+
 const ENV_API_KEY = 'THISDATA_API_KEY';
 const ENV_JS_WRITE_KEY = 'THISDATA_JS_WRITE_KEY';
 const ENV_JS_SIGNATURE = 'THISDATA_JS_SIGNATURE';
