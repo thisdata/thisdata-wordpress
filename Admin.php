@@ -22,7 +22,7 @@ class Admin extends \Mohiohio\WordPress\Admin
     }
 
     function get_intro() {
-        return '<p>This plugin will look for environment variables before reading the below values.<br/>Using environment variables instead of these fields is the recommended approach.</p>';
+        return '<p>This plugin will look for an environment variable before reading the below value.<br/>Using an environment variable instead of this field is the recommended approach.</p>';
     }
 
     static function getSettingsPageURL() {
@@ -64,7 +64,7 @@ class Admin extends \Mohiohio\WordPress\Admin
             'props' => ['class'=>'regular-text']
         ];
 
-        $this->add_field(static::display_env_set(ENV_JS_WRITE_KEY,$field));
+        /*$this->add_field(static::display_env_set(ENV_JS_WRITE_KEY,$field));
 
         $field = [
             'name'=> self::SETTINGS_JS_SIGNATURE,
@@ -73,7 +73,7 @@ class Admin extends \Mohiohio\WordPress\Admin
             'props' => ['class'=>'regular-text']
         ];
 
-        $this->add_field(static::display_env_set(ENV_JS_SIGNATURE,$field));
+        $this->add_field(static::display_env_set(ENV_JS_SIGNATURE,$field));*/
 
         $this->add_field([
             'name'=>'webhook',
@@ -84,14 +84,14 @@ class Admin extends \Mohiohio\WordPress\Admin
             }
         ]);
 
-        $field = [
+        /*$field = [
             'name'=> self::SETTINGS_WEBHOOK_SIGNATURE,
             'title'=>'Secret for Webhook Signatures ',
             'type' => 'text',
             'props' => ['class'=>'regular-text']
         ];
 
-        $this->add_field(static::display_env_set(ENV_WEBHOOK_SIGNATURE,$field));
+        $this->add_field(static::display_env_set(ENV_WEBHOOK_SIGNATURE,$field));*/
     }
 
     static function get_settings_namespace() {

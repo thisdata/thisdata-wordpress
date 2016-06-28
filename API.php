@@ -31,12 +31,13 @@ class API {
     }
 
     static function getWebhookSignature() {
-        $signature = getenv(ENV_WEBHOOK_SIGNATURE) ?: Admin::get_setting(Admin::SETTINGS_WEBHOOK_SIGNATURE);
-
-        return $signature ?: static::getKey();
+        return static::getKey();
+        /*$signature = getenv(ENV_WEBHOOK_SIGNATURE) ?: Admin::get_setting(Admin::SETTINGS_WEBHOOK_SIGNATURE);
+        return $signature ?: static::getKey();*/
     }
 
     static function getJSSignature() {
-        return getenv(ENV_JS_SIGNATURE) ?: Admin::get_setting(Admin::SETTINGS_JS_SIGNATURE);
+        return static::getKey();
+        //return getenv(ENV_JS_SIGNATURE) ?: Admin::get_setting(Admin::SETTINGS_JS_SIGNATURE);
     }
 }
