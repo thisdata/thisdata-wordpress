@@ -8,6 +8,9 @@
 namespace ThisData\WordPress;
 
 const ENV_API_KEY = 'THISDATA_API_KEY';
+const ENV_JS_WRITE_KEY = 'THISDATA_JS_WRITE_KEY';
+const ENV_JS_SIGNATURE = 'THISDATA_JS_SIGNATURE';
+const ENV_WEBHOOK_SIGNATURE = 'THISDATA_WEBHOOK_SIGNATURE';
 
 if( is_admin() ) {
     $admin = new Admin();
@@ -23,6 +26,7 @@ add_action('init', function() {
 
             Events::init(API::getEventsEndpoint());
             Webhook::init();
+            JS::init();
 
         } catch (\Exception $e) {
 

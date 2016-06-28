@@ -12,6 +12,8 @@ class Events {
     *
     * WordPress actions here
     * https://developer.wordpress.org/
+    *
+    * Thisdata verbs to WordPress actions
     */
     static $events = [
         'log-in' => 'wp_login',
@@ -27,6 +29,7 @@ class Events {
         'plugin-activated' => 'activate_plugin',
         'plugin-deactivated' => 'deactivate_plugin',
         'automatic-update' => 'upgrader_process_complete'
+
     ];
 
     static function init(\ThisData\Api\Endpoint\EventsEndpoint $endpoint) {
@@ -163,11 +166,7 @@ class Events {
 
         extract($args);
 
-        if (!$user && $username) {
-            $user = get_user_by('login',$username);
-        }
-
-        $userData = $user ? static::getUser($user) : static::getAnonymousUser($username);
+        $userData = static::getUser($user, $username);
 
         //\Analog::log('Tracking Event '.$verb.' with '.var_export($userData,true),\Analog::DEBUG);
         return $eventEndpoint->trackEvent($verb,
@@ -191,15 +190,17 @@ class Events {
         ];
     }
 
-    static function getUser(\WP_User $user) {
+    static function getUser(\WP_User $user = null, $username=null) {
 
-        $user = $user ?: wp_get_current_user();
+        if (!$user && $username) {
+            $user = get_user_by('login',$username);
+        }
 
-        return [
-            'id' => $user->user_login,
-            'name' => static::getUserName($user),
-            'email' => $user->user_email,
-        ];
+        return $user ? [
+                'id' => $user->user_login,
+                'name' => static::getUserName($user),
+                'email' => $user->user_email,
+            ] : static::getAnonymousUser($username);
     }
 
     static function getUserName($user) {

@@ -88,7 +88,7 @@ class Webhook {
     }
 
     static function getHash() {
-        return hash_hmac('sha512', static::getRequestBody(), API::getKey());
+        return hash_hmac('sha512', static::getRequestBody(), API::getWebhookSignature());
     }
 
     static function authenticate() {
