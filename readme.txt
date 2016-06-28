@@ -18,7 +18,7 @@ When suspicious logins are detected ThisData will immediately notify the user by
 
 If the user responds to the email indicating it was not them, then the user session can be automatically terminated and a password reset email will be sent.
 
-It relies on the ThisData anomaly detection algorithms which take into account many behavioural factors including:
+It relies on the ThisData anomaly detection algorithms which take into account many behavioral factors including:
 
 *   Location & Velocity
 *   Devices
