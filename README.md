@@ -63,4 +63,4 @@ The webhooks let you create an automated security workflow that will shutdown th
 
 **I'm not seeing events in ThisData**
 
-Chances are you have the API key wrong. Double check this and try again. If you're still having trouble contact support at thisdata dot com and we will help.
+Chances are you have the API key wrong. Double check this and try again. If you're still having trouble contact support@thisdata.com, and we will help.
