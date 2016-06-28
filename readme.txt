@@ -68,7 +68,7 @@ Before installing this plugin, you'll need to sign up for a free ThisData accoun
 
 = Is this service free? =
 
-Yes, for up to 50 users the monitoring and notification service is free.
+Yes, for up to 250 users the basic monitoring and notification service is free.
 
 = What are alert webhooks? =
 
