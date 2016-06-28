@@ -68,7 +68,7 @@ Before installing this plugin, you'll need to sign up for a free ThisData accoun
 
 = Is this service free? =
 
-Yes, for up to 250 users the basic monitoring and notification service is free.
+Yes, for up to 250 users the basic monitoring and notification service is free. If you want to implement the **advanced** setup  that uses webhooks to disable user access when a threat is confirmed then you will need a paid account, but we offer a 30 day trial, so have a go!
 
 = What are alert webhooks? =
 
