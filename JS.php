@@ -8,8 +8,7 @@ class JS {
 
         \Analog::log('in JS::track',\Analog::DEBUG);
 
-        wp_register_script('thisdata-api', 'https://api.thisdata.com/js/thisdata-LATEST.js', [], 'latest', true);
-        wp_register_script('thisdata-plugin', plugin_dir_url(__FILE__).'js/thisdata.js',['thisdata-api'], '1', true);
+        wp_register_script('thisdata-plugin', plugin_dir_url(__FILE__).'js/thisdata.js',[], '1', true);
 
         add_action('login_enqueue_scripts', function(){
             static::track();
