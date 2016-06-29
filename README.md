@@ -1,8 +1,8 @@
 # ThisData for WordPress Plugin
 
-ThisData is a security service that monitors for suspicious logins to your WordPress websites.
+[ThisData](https://thisdata.com) is a security service that monitors for suspicious logins to your WordPress websites. You'll be able to prevent hackers from defacing your website, and performing other malicious activity.
 
-When suspicious logins are detected ThisData will immediately notify the user by email, asking if the login was actually them.
+When suspicious logins are detected ThisData will immediately notify that user by email, asking if the login was actually them.
 
 If the user responds to the email indicating it was not them, then the user session can be automatically terminated and a password reset email will be sent.
 
@@ -16,6 +16,8 @@ It relies on the ThisData anomaly detection algorithms which take into account m
 *   And more...
 
 You will also benefit from having a beautiful real-time security dashboard for your WordPress website which shows who is accessing, what devices they're using and where they're located.
+
+![Example email](https://raw.githubusercontent.com/thisdata/thisdata-wordpress/master/assets/header.png)
 
 ##Installation
 
