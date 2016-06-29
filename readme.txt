@@ -40,7 +40,7 @@ To complete the installation of this plugin you will need a ThisData account.
 
 = Now install the plugin. =
 
-1. Upload the plugin files to the `/wp-content/plugins/thisdata` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the [plugin files](https://github.com/thisdata/thisdata-wordpress/blob/master/dist/thisdata-wordpress.zip) to the `/wp-content/plugins/thisdata` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the 'Plugins' screen in WordPress
 1. Use the Settings->ThisData screen to configure the plugin
 1. Copy your ThisData API Key and Javascript Write Key into the boxes provided and click "Save Changes"
