@@ -8,7 +8,7 @@ Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The admin area of your WordPress site is constantly under attack. ThisData monitors logins to your site and notifies the admin/user if a suspicious login is detected.
+ThisData monitors logins to your site and notifies the admin/user if a suspicious login is detected.
 
 == Description ==
 
