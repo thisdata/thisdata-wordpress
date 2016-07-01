@@ -1,5 +1,5 @@
 === Login Security by ThisData ===
-Contributors: tim, thisdata
+Contributors: timfield, thisdata
 Donate link: https://thisdata.com/upgrade
 Tags: security, phishing, login, authentication
 Requires at least: 4.5
