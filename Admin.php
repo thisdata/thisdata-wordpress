@@ -64,8 +64,9 @@ class Admin extends \Mohiohio\WordPress\Admin
             'props' => ['class'=>'regular-text']
         ];
 
-        /*$this->add_field(static::display_env_set(ENV_JS_WRITE_KEY,$field));
+        $this->add_field(static::display_env_set(ENV_JS_WRITE_KEY,$field));
 
+        /*
         $field = [
             'name'=> self::SETTINGS_JS_SIGNATURE,
             'title'=>'JavaScript Secret Signature',
