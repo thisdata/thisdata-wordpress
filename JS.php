@@ -6,7 +6,7 @@ class JS {
 
     static function init() {
 
-        \Analog::log('in JS::track',\Analog::DEBUG);
+        //\Analog::log('in JS::track',\Analog::DEBUG);
 
         wp_register_script('thisdata-plugin', plugin_dir_url(__FILE__).'js/thisdata.js',[], '1', true);
 
@@ -27,11 +27,11 @@ class JS {
 
     static function track($params=null) {
 
-        \Analog::log('in JS::track',\Analog::DEBUG);
+        //\Analog::log('in JS::track',\Analog::DEBUG);
 
         if($JSWriteKey = API::getJSWriteKey() ) {
 
-            \Analog::log('Tracking with jswritekey'.$JSWriteKey,\Analog::DEBUG);
+            //\Analog::log('Tracking with jswritekey'.$JSWriteKey,\Analog::DEBUG);
 
             $data = [
                 'apiKey' => $JSWriteKey,

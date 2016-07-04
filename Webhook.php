@@ -13,28 +13,28 @@ class Webhook {
 
             self::WEBHOOK_URL => function() {
 
-                \Analog::log('Reqest body: '.file_get_contents('php://input'), \Analog::DEBUG);
-                \Analog::log('Request Hash: '.static::getHash(), \Analog::DEBUG);
-                \Analog::log('Header Hash: '. ( isset($_SERVER['HTTP_X_SIGNATURE']) ? $_SERVER['HTTP_X_SIGNATURE'] : " ( not found ) "  ) , \Analog::DEBUG);
+                //\Analog::log('Reqest body: '.file_get_contents('php://input'), \Analog::DEBUG);
+                //\Analog::log('Request Hash: '.static::getHash(), \Analog::DEBUG);
+                //\Analog::log('Header Hash: '. ( isset($_SERVER['HTTP_X_SIGNATURE']) ? $_SERVER['HTTP_X_SIGNATURE'] : " ( not found ) "  ) , \Analog::DEBUG);
 
                 if(!static::authenticate()) {
-                    \Analog::log('Webhook failed to authenticate', \Analog::DEBUG);
+                    //\Analog::log('Webhook failed to authenticate', \Analog::DEBUG);
                     header('HTTP/1.0 401 Unauthorized');
                     exit();
                 }
 
-                \Analog::log('Webhook authenticated.', \Analog::DEBUG);
+                //\Analog::log('Webhook authenticated.', \Analog::DEBUG);
 
                 $data = json_decode(static::getRequestBody(),true);
 
                 $username = $data['user']['id'];
                 $was_user = $data['was_user'];
 
-                \Analog::log('User ID: '.$username, \Analog::DEBUG);
-                \Analog::log('Was User: '.var_export($was_user,true), \Analog::DEBUG);
+                //\Analog::log('User ID: '.$username, \Analog::DEBUG);
+                //\Analog::log('Was User: '.var_export($was_user,true), \Analog::DEBUG);
 
                 if(!$user = get_user_by('login',$username)) {
-                    \Analog::log('No user found', \Analog::DEBUG);
+                    //\Analog::log('No user found', \Analog::DEBUG);
                     return false; //No such user
                 }
 
@@ -57,18 +57,18 @@ class Webhook {
                     ]);
 
                     //Destory sessoins,
-                    \Analog::log('Destroying session', \Analog::DEBUG);
+                    //\Analog::log('Destroying session', \Analog::DEBUG);
                     $sessions = \WP_Session_Tokens::get_instance($user_id);
                     $sessions->destroy_all();
 
                     //Create new password
-                    \Analog::log('Creating new password', \Analog::DEBUG);
+                    //\Analog::log('Creating new password', \Analog::DEBUG);
                     wp_set_password(wp_generate_password(), $user_id);
 
                     $key = get_password_reset_key($user);
 
                     //Email user with Reset password link
-                    \Analog::log('Emailing user with reset password link', \Analog::DEBUG);
+                    //\Analog::log('Emailing user with reset password link', \Analog::DEBUG);
                     Email::passwordReset($user, $key);
 
                 } else {
