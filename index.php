@@ -2,7 +2,7 @@
 /*
 Plugin Name: ThisData for WordPress
 Plugin URI: https://thisdata.com/
-Version: 1.1.2
+Version: 1.1.3
 Description: ThisData provides login intelligence. We notify you when one of your users or customers has their account accessed from somewhere unusual or by a device they don't normally use. It gives your customers the confidence that you're taking security seriously and doing everything you can to protect their account.
 Text Domain: thisdata-plugin
 License: GPL

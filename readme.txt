@@ -1,10 +1,10 @@
 === Login Security by ThisData ===
-Contributors: timfield, thisdata
+Contributors: thisdata, timfield
 Donate link: https://thisdata.com/upgrade
 Tags: security, phishing, login, authentication
 Requires at least: 4.5
 Tested up to: 4.5.3
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
