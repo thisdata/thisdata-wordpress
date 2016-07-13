@@ -66,8 +66,20 @@ class Events {
     }
 
     static function trackLogIn($args) {
-        // https://developer.wordpress.org/reference/hooks/wp_login/
-        return  static::userNameHook($args);
+
+        // @see https://developer.wordpress.org/reference/hooks/wp_login/
+        list($username, $user) = $args['hookArgs'];
+
+        if( empty($username) || !($user instanceof \WP_User) ) {
+            //This should never happen.  @see wp-includes/user.php signon
+            //But note that if a plugin returned something other than WP_Error on
+            //wp_authenticate ( null for example ) then we would be in trouble.
+            //Without this check, we would record an anonymous login, which isn't correct
+            //\Analog::log('Invalid arguments passed from wp_login hook', \Analog::DEBUG);
+            return null;
+        }
+
+        return static::userNameHook($args);
     }
 
     static function trackLogOut($args) {
